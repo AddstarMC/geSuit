@@ -97,6 +97,6 @@ public class TeleportsListener implements Listener {
 			// This is to prevent recording the back location when teleporting across servers, on the destination server
 			TeleportsManager.ignoreTeleport.add(p);
 		}
-		Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> TeleportsManager.ignoreTeleport.remove(p), 20);
-	}
+		Bukkit.getScheduler().runTaskLater(instance, () -> TeleportsManager.ignoreTeleport.remove(p), 20);
+        }
 }
