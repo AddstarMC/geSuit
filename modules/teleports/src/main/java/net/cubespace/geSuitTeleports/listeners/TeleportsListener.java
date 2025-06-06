@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
@@ -71,12 +72,17 @@ public class TeleportsListener implements Listener {
         manager.sendTeleportBackLocation(e.getPlayer(), empty);
 	}
 	
-	@EventHandler(ignoreCancelled = true)
-	public void playerDeath(PlayerDeathEvent e){
-		if (e.getEntity().hasMetadata("NPC")) return; // Ignore NPCs
+        @EventHandler(ignoreCancelled = true)
+        public void playerDeath(PlayerDeathEvent e){
+                if (e.getEntity().hasMetadata("NPC")) return; // Ignore NPCs
         manager.sendDeathBackLocation(e.getEntity());
         TeleportsManager.ignoreTeleport.add(e.getEntity());
-	}
+        }
+
+        @EventHandler(ignoreCancelled = true)
+        public void playerRespawn(PlayerRespawnEvent e){
+                TeleportsManager.ignoreTeleport.remove(e.getPlayer());
+        }
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void playerJoin(final PlayerJoinEvent e) {
