@@ -287,7 +287,7 @@ public class TeleportsManager extends DataManager {
         } else {
             pendingTeleports.put( player, t );
             //clear pending teleport if they dont connect
-            Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> pendingTeleports.remove(player), 100L);
+            Bukkit.getScheduler().runTaskLater(instance, () -> pendingTeleports.remove(player), 100L);
         }
     }
 
@@ -331,7 +331,7 @@ public class TeleportsManager extends DataManager {
         } else {
             pendingTeleportLocations.put( player, t );
             //clear pending teleport if they dont connect
-            Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> pendingTeleportLocations.remove(player), 100L);
+            Bukkit.getScheduler().runTaskLater(instance, () -> pendingTeleportLocations.remove(player), 100L);
         }
     }
 
