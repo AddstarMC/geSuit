@@ -36,6 +36,7 @@ public class HomesMessageListener extends MessageListener {
                 break;
             case "DeleteOtherPlayerHome":
                 HomesManager.deleteOtherHome(PlayerManager.getPlayer(in.readUTF()), in.readUTF(), in.readUTF());
+                break;
             case "SendPlayerHome":  //SendOtherPlayerHome sendPlayerToOtherHome
                 HomesManager.sendPlayerToHome(PlayerManager.getPlayer(in.readUTF(), true), in.readUTF());
                 break;

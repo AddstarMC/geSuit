@@ -279,9 +279,9 @@ public class Bans implements IRepository {
             statement.setString(4, bannedBy);
             statement.setString(5, reason);
             statement.setString(6, type);
-            statement.setInt(6, active);
-            statement.setDate(7, bannedOn);
-            statement.setDate(8, bannedUntil);
+            statement.setInt(7, active);
+            statement.setDate(8, new java.sql.Date(bannedOn.getTime()));
+            statement.setDate(9, new java.sql.Date(bannedUntil.getTime()));
         
             statement.executeUpdate();
         } catch (Exception e) {

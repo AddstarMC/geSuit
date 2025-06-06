@@ -23,11 +23,8 @@ public class PortalsMessageListener implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
-        String task;
-
-        try {
-            task = in.readUTF();
+        try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(message))) {
+            String task = in.readUTF();
             switch (task) {
                 case "SendPortal":
                     manager.addPortal(in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), new Location(Bukkit.getWorld(in.readUTF()), in.readDouble(), in.readDouble(), in.readDouble()), new Location(Bukkit.getWorld(in.readUTF()), in.readDouble(), in.readDouble(), in.readDouble()));

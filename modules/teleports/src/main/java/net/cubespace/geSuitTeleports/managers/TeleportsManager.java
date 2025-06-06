@@ -50,43 +50,40 @@ public class TeleportsManager extends DataManager {
     }
 
     public void tpAll(CommandSender sender, String targetPlayer) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "TpAll" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( targetPlayer );
-        } catch ( IOException e ) {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("TpAll");
+            out.writeUTF(sender.getName());
+            out.writeUTF(targetPlayer);
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
     public void tpaRequest(CommandSender sender, String targetPlayer) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "TpaRequest" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( targetPlayer );
-        } catch ( IOException e ) {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("TpaRequest");
+            out.writeUTF(sender.getName());
+            out.writeUTF(targetPlayer);
+            instance.getInstance().sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.getInstance().sendMessage(b);
     }
 
     public void tpaHereRequest(CommandSender sender, String targetPlayer) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "TpaHereRequest" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( targetPlayer );
-        } catch ( IOException e ) {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("TpaHereRequest");
+            out.writeUTF(sender.getName());
+            out.writeUTF(targetPlayer);
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -100,27 +97,25 @@ public class TeleportsManager extends DataManager {
         }
 
         player.saveData();
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("TpAccept");
             out.writeUTF(sender.getName());
+            instance.sendMessage(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void tpDeny(String sender) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "TpDeny" );
-            out.writeUTF( sender );
-        } catch ( IOException e ) {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("TpDeny");
+            out.writeUTF(sender);
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -137,10 +132,13 @@ public class TeleportsManager extends DataManager {
 
                         player.sendMessage(geSuitTeleports.teleporting);
                         player.saveData();
-                        ByteArrayOutputStream b = new ByteArrayOutputStream();
-                        DataOutputStream out = new DataOutputStream(b);
-                        doTeleportToPlayer(out, player, target);
-                        instance.sendMessage(b);
+                        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                             DataOutputStream out = new DataOutputStream(b)) {
+                            doTeleportToPlayer(out, player, target);
+                            instance.sendMessage(b);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         player.sendMessage(geSuitTeleports.aborted);
                     }
@@ -148,10 +146,13 @@ public class TeleportsManager extends DataManager {
             }, 60L);
         } else {
             player.saveData();
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-            doTeleportToPlayer(out, player, target);
-            instance.sendMessage(b);
+            try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                 DataOutputStream out = new DataOutputStream(b)) {
+                doTeleportToPlayer(out, player, target);
+                instance.sendMessage(b);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -177,43 +178,41 @@ public class TeleportsManager extends DataManager {
     }
 
     public void sendDeathBackLocation(Player p) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "PlayersDeathBackLocation" );
-            out.writeUTF( p.getName() );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("PlayersDeathBackLocation");
+            out.writeUTF(p.getName());
             Location l = p.getLocation();
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-        } catch ( IOException e ) {
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void sendTeleportBackLocation(Player p, boolean empty) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "PlayersTeleportBackLocation" );
-            out.writeUTF( p.getName() );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
+            out.writeUTF("PlayersTeleportBackLocation");
+            out.writeUTF(p.getName());
             Location l = p.getLocation();
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-        } catch ( IOException e ) {
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            //todo the boolean was being passed to the message sender which was ignoring it..need to
+            // evaluate its importance
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        //todo the boolean was being passed to the message sender which was ignoring it..need to
-        // evaluate its importance
-        instance.sendMessage(b);
     }
 
     @SuppressWarnings("deprecation")
