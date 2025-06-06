@@ -2,7 +2,9 @@ package net.cubespace.geSuit;
 
 import net.cubespace.geSuit.managers.LoggingManager;
 import net.cubespace.geSuit.task.PluginMessageTask;
+import net.cubespace.geSuit.utils.Utilities;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -114,5 +116,24 @@ public abstract class BukkitModule extends JavaPlugin {
     
     public void sendMessage(ByteArrayOutputStream b){
         new PluginMessageTask(b,this).runTaskAsynchronously(this);
+    }
+
+    /**
+     * Immediately send a plugin message via the provided player. This bypasses
+     * the asynchronous {@link PluginMessageTask} to ensure the message is sent
+     * before the player disconnects.
+     *
+     * @param player the player to send the message through
+     * @param b      the message data
+     */
+    public void sendMessage(Player player, ByteArrayOutputStream b){
+        if(player != null && player.isOnline()){
+            player.sendPluginMessage(this, getCHANNEL_NAME(), b.toByteArray());
+            LoggingManager.debug("[" + getName() + "] " +
+                    Utilities.dumpPacket(getCHANNEL_NAME(), "SEND", b.toByteArray()));
+        }else{
+            LoggingManager.debug("[" + getName() + "] Unable to send Message-No player online.- " +
+                    Utilities.dumpPacket(getCHANNEL_NAME(), "SEND", b.toByteArray()));
+        }
     }
 }
