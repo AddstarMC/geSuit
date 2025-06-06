@@ -189,7 +189,7 @@ public class TeleportsManager extends DataManager {
             out.writeDouble(l.getZ());
             out.writeFloat(l.getYaw());
             out.writeFloat(l.getPitch());
-            instance.sendMessage(b);
+            instance.sendMessage(p, b);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -209,7 +209,7 @@ public class TeleportsManager extends DataManager {
             out.writeFloat(l.getPitch());
             //todo the boolean was being passed to the message sender which was ignoring it..need to
             // evaluate its importance
-            instance.sendMessage(b);
+            instance.sendMessage(p, b);
         } catch (IOException e) {
             e.printStackTrace();
         }
