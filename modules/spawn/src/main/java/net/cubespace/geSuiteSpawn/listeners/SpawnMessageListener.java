@@ -24,11 +24,8 @@ public class SpawnMessageListener implements PluginMessageListener, Listener {
 
     @Override
     public void onPluginMessageReceived( String channel, Player player, byte[] message ) {
-        DataInputStream in = new DataInputStream( new ByteArrayInputStream( message ) );
-        String task;
-
-        try {
-            task = in.readUTF();
+        try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(message))) {
+            String task = in.readUTF();
             switch ( task ) {
                 case "SendSpawn":
                     if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Message \"SendSpawn\" received from proxy");
@@ -54,7 +51,6 @@ public class SpawnMessageListener implements PluginMessageListener, Listener {
                     manager.sendVersion();
                     break;
             }
-
         } catch ( IOException e ) {
             e.printStackTrace();
         }

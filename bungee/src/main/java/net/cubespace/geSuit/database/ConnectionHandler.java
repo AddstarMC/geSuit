@@ -58,9 +58,15 @@ public class ConnectionHandler {
         this.used = true;
         if (connection != null) {
             try {
+                for (PreparedStatement ps : preparedStatements.values()) {
+                    try {
+                        ps.close();
+                    } catch (SQLException ignore) {
+                    }
+                }
+                preparedStatements.clear();
                 connection.close();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

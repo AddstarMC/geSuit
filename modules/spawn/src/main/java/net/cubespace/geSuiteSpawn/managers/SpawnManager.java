@@ -26,39 +26,35 @@ public class SpawnManager extends DataManager {
 
     public void sendPlayerToProxySpawn(CommandSender sender, boolean silent) {
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SendToProxySpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeBoolean( silent );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SendToProxySpawn");
+            out.writeUTF(sender.getName());
+            out.writeBoolean(silent);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void setNewPlayerSpawn(CommandSender sender) {
         Player p = ( Player ) sender;
         Location l = p.getLocation();
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SetNewPlayerSpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetNewPlayerSpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -66,45 +62,41 @@ public class SpawnManager extends DataManager {
         Player p = ( Player ) sender;
         Location l = p.getLocation();
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SetProxySpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetProxySpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void setServerSpawn(CommandSender sender) {
         Player p = ( Player ) sender;
         Location l = p.getLocation();
         p.getWorld().setSpawnLocation( l.getBlockX(), l.getBlockY(), l.getBlockZ() );
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SetServerSpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-            out.writeBoolean( hasServerSpawn() );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetServerSpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            out.writeBoolean(hasServerSpawn());
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -112,23 +104,21 @@ public class SpawnManager extends DataManager {
         Player p = ( Player ) sender;
         Location l = p.getLocation();
         p.getWorld().setSpawnLocation( l.getBlockX(), l.getBlockY(), l.getBlockZ() );
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SetWorldSpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-            out.writeBoolean( hasWorldSpawn( p.getWorld() ) );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetWorldSpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            out.writeBoolean(hasWorldSpawn(p.getWorld()));
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -165,32 +155,27 @@ public class SpawnManager extends DataManager {
     public void delWorldSpawn(CommandSender sender) {
         Player p = ( Player ) sender;
         Location l = p.getLocation();
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "DelWorldSpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( l.getWorld().getName() );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("DelWorldSpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(l.getWorld().getName());
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void getSpawns() {
         if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Message \"GetSpawns\" sent to proxy");
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-
-        try {
-            out.writeUTF( "GetSpawns" );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("GetSpawns");
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-
-        instance.sendMessage(b);
     }
 
     public static boolean hasWorldSpawn( World w ) {
@@ -238,30 +223,26 @@ public class SpawnManager extends DataManager {
     }
 
     public void sendPlayerToArgSpawn(CommandSender sender, String spawn, String server) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SendToArgSpawn" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( spawn );
-            out.writeUTF( server );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SendToArgSpawn");
+            out.writeUTF(sender.getName());
+            out.writeUTF(spawn);
+            out.writeUTF(server);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void sendVersion() {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SendVersion" );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SendVersion");
             out.writeUTF(ChatColor.RED + "Spawns - " + ChatColor.GOLD + instance.getDescription().getVersion());
-
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 }

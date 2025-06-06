@@ -36,17 +36,15 @@ public class PortalsManager extends DataManager {
     }
 
     public void deletePortal(String name, String string) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "DeletePortal" );
-            out.writeUTF( name );
-            out.writeUTF( string );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("DeletePortal");
+            out.writeUTF(name);
+            out.writeUTF(string);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -71,33 +69,29 @@ public class PortalsManager extends DataManager {
     }
 
     public void getPortalsList(String name) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "ListPortals" );
-            out.writeUTF( name );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("ListPortals");
+            out.writeUTF(name);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
     public void teleportPlayer(Player p, Portal portal) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "TeleportPlayer" );
-            out.writeUTF( p.getName() );
-            out.writeUTF( portal.getType() );
-            out.writeUTF( portal.getDestination() );
-            out.writeBoolean( p.hasPermission( "gesuit.portals.portal." + portal.getName() ) || p.hasPermission( "gesuit.portals.portal.*" ) );
-
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("TeleportPlayer");
+            out.writeUTF(p.getName());
+            out.writeUTF(portal.getType());
+            out.writeUTF(portal.getDestination());
+            out.writeBoolean(p.hasPermission("gesuit.portals.portal." + portal.getName()) || p.hasPermission("gesuit.portals.portal.*"));
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void setPortal(CommandSender sender, String name, String type, String dest,
@@ -113,34 +107,33 @@ public class PortalsManager extends DataManager {
             return;
         }
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "SetPortal" );
-            out.writeUTF( sender.getName() );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetPortal");
+            out.writeUTF(sender.getName());
             if (!(region instanceof CuboidRegion)) {
-                out.writeBoolean( false );
+                out.writeBoolean(false);
             } else {
-                out.writeBoolean( true );
-                out.writeUTF( name );
-                out.writeUTF( type );
-                out.writeUTF( dest );
-                out.writeUTF( fill );
+                out.writeBoolean(true);
+                out.writeUTF(name);
+                out.writeUTF(type);
+                out.writeUTF(dest);
+                out.writeUTF(fill);
                 BlockVector3 max = region.getMaximumPoint();
                 BlockVector3 min = region.getMinimumPoint();
                 out.writeUTF(region.getWorld().getName());
-                out.writeDouble( max.getX() );
-                out.writeDouble( max.getY() );
-                out.writeDouble( max.getZ() );
+                out.writeDouble(max.getX());
+                out.writeDouble(max.getY());
+                out.writeDouble(max.getZ());
                 out.writeUTF(region.getWorld().getName());
-                out.writeDouble( min.getX() );
-                out.writeDouble( min.getY() );
-                out.writeDouble( min.getZ() );
+                out.writeDouble(min.getX());
+                out.writeDouble(min.getY());
+                out.writeDouble(min.getZ());
             }
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
 
     }
 
@@ -157,14 +150,13 @@ public class PortalsManager extends DataManager {
     }
 
     public void requestPortals() {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "RequestPortals" );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("RequestPortals");
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     
     }
 

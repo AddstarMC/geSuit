@@ -93,25 +93,16 @@ public class OnTime implements IRepository {
         	sqlvalues.append(values.get(x));
         }
 
-        Statement stmt = null;
-        try {
-        	// Sadly, we can't use prepared statements here because the statement is dynamic
-            Connection con = DatabaseManager.connectionPool.getConnection();
-            stmt = con.createStatement();
-        	stmt.executeUpdate("INSERT DELAYED INTO "+ ConfigManager.main.Table_OnTime + " " +
-        			"(uuid,timeslot,time) VALUES " + sqlvalues + " " +
-        			"ON DUPLICATE KEY UPDATE time=time+VALUES(time)"
-        	);
-            con.close();
+        try (
+                Connection con = DatabaseManager.connectionPool.getConnection();
+                Statement stmt = con.createStatement()
+        ) {
+            // Sadly, we can't use prepared statements here because the statement is dynamic
+            stmt.executeUpdate("INSERT DELAYED INTO " + ConfigManager.main.Table_OnTime + " " +
+                    "(uuid,timeslot,time) VALUES " + sqlvalues + " " +
+                    "ON DUPLICATE KEY UPDATE time=time+VALUES(time)");
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-			try {
-				if (stmt != null) { stmt.close(); stmt = null; }
-			} catch (SQLException e) {
-				System.out.println("ERROR: Failed to close SQL Statement!");
-				e.printStackTrace();
-			}
         }
     }
 

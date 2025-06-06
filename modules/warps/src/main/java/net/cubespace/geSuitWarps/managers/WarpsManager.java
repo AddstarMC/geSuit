@@ -20,102 +20,96 @@ public class WarpsManager extends DataManager {
 
     public void warpPlayer(final CommandSender sender, final String senderName, final String warp) {
     	Player p = Bukkit.getPlayer(sender.getName());
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("WarpPlayer");
             out.writeUTF(sender.getName());
             out.writeUTF(senderName);
             out.writeUTF(warp);
             out.writeBoolean(sender.hasPermission("gesuit.warps.warp." + warp.toLowerCase()) || sender.hasPermission("gesuit.warps.warp.*"));
             out.writeBoolean(sender.hasPermission("gesuit.warps.bypass"));
+            instance.sendMessage(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void setWarp(CommandSender sender, String name, boolean hidden, boolean global) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
         Location l = ( ( Player ) sender ).getLocation();
-        try {
-            out.writeUTF( "SetWarp" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( name );
-            out.writeUTF( l.getWorld().getName() );
-            out.writeDouble( l.getX() );
-            out.writeDouble( l.getY() );
-            out.writeDouble( l.getZ() );
-            out.writeFloat( l.getYaw() );
-            out.writeFloat( l.getPitch() );
-            out.writeBoolean( hidden );
-            out.writeBoolean( global );
-        } catch ( IOException e ) {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetWarp");
+            out.writeUTF(sender.getName());
+            out.writeUTF(name);
+            out.writeUTF(l.getWorld().getName());
+            out.writeDouble(l.getX());
+            out.writeDouble(l.getY());
+            out.writeDouble(l.getZ());
+            out.writeFloat(l.getYaw());
+            out.writeFloat(l.getPitch());
+            out.writeBoolean(hidden);
+            out.writeBoolean(global);
+            instance.sendMessage(b);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void setWarpDesc(CommandSender sender, String warpName, String description) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
         Location l = ( ( Player ) sender ).getLocation();
-        try {
-            out.writeUTF( "SetWarpDesc" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( warpName );
-            out.writeUTF( description );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("SetWarpDesc");
+            out.writeUTF(sender.getName());
+            out.writeUTF(warpName);
+            out.writeUTF(description);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void silentWarpPlayer(final CommandSender sender, final String senderName, final String warp) {
         Player p = Bukkit.getPlayer(sender.getName());
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("SilentWarpPlayer");
             out.writeUTF(sender.getName());
             out.writeUTF(senderName);
             out.writeUTF(warp);
             out.writeBoolean(sender.hasPermission("gesuit.warps.warp." + warp.toLowerCase()) || sender.hasPermission("gesuit.warps.warp.*"));
             out.writeBoolean(sender.hasPermission("gesuit.warps.bypass"));
+            instance.sendMessage(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
     public void deleteWarp(CommandSender sender, String warp) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "DeleteWarp" );
-            out.writeUTF( sender.getName() );
-            out.writeUTF( warp );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("DeleteWarp");
+            out.writeUTF(sender.getName());
+            out.writeUTF(warp);
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 
 
     public void listWarps(CommandSender sender) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( b );
-        try {
-            out.writeUTF( "GetWarpsList" );
-            out.writeUTF( sender.getName() );
-            out.writeBoolean( sender.hasPermission( "gesuit.warps.list.server" ) );
-            out.writeBoolean( sender.hasPermission( "gesuit.warps.list.global" ) );
-            out.writeBoolean( sender.hasPermission( "gesuit.warps.list.hidden" ) );
-            out.writeBoolean( sender.hasPermission( "gesuit.warps.bypass" ) );
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream( b )) {
+            out.writeUTF("GetWarpsList");
+            out.writeUTF(sender.getName());
+            out.writeBoolean(sender.hasPermission("gesuit.warps.list.server"));
+            out.writeBoolean(sender.hasPermission("gesuit.warps.list.global"));
+            out.writeBoolean(sender.hasPermission("gesuit.warps.list.hidden"));
+            out.writeBoolean(sender.hasPermission("gesuit.warps.bypass"));
+            instance.sendMessage(b);
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        instance.sendMessage(b);
     }
 }

@@ -32,10 +32,8 @@ public class AdminListener implements PluginMessageListener, Listener{
             instance.getLogger().info("DEBUG: " + Utilities.dumpPacket(channel,"RECV",message));
             instance.getLogger().info("Debug: this Server Name = " + instance.getName());
         }
-        DataInputStream in = new DataInputStream( new ByteArrayInputStream( message ) );
-        String task;
-        try {
-            task = in.readUTF();
+        try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(message))) {
+            String task = in.readUTF();
             switch ( task ) {
                 case "ServerRestart":
                     // servername sender milliSecs

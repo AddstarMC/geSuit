@@ -69,17 +69,21 @@ public class Profile {
             offset += batch.size();
             HttpURLConnection connection = (HttpURLConnection) PROFILE_URL.openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type","application/json; encoding=UTF-8");
+            connection.setRequestProperty("Content-Type", "application/json; encoding=UTF-8");
             connection.setUseCaches(false);
             connection.setDoInput(true);
             connection.setDoOutput(true);
-            OutputStream out = connection.getOutputStream();
-            out.write(gson.get().toJson(batch).getBytes(UTF8));
-            out.close();
-            Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), UTF8));
-            Profile[] profiles = gson.get().fromJson(in, Profile[].class);
-            for (Profile profile : profiles) {
-                result.put(profile.getName(), profile.getUUID());
+            try (
+                    OutputStream out = connection.getOutputStream();
+                    Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), UTF8))
+            ) {
+                out.write(gson.get().toJson(batch).getBytes(UTF8));
+                Profile[] profiles = gson.get().fromJson(in, Profile[].class);
+                for (Profile profile : profiles) {
+                    result.put(profile.getName(), profile.getUUID());
+                }
+            } finally {
+                connection.disconnect();
             }
         }
         return result;
@@ -97,22 +101,25 @@ public class Profile {
             connection.setUseCaches(false);
             connection.setDoInput(true);
             connection.setDoOutput(false);
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), UTF8));
-            if (connection.getResponseCode() == 429) {
-                return null;
-            }
-            NameHistory[] names = gson.get().fromJson(in, NameHistory[].class);
-            if (names == null || names.length == 0) return null;
-            for (NameHistory name : names) {
-                if (name.getName() != null) {
-                    String oldname = name.getName();
-                    Timestamp changeTime = new Timestamp(0);
-                    String changedAt = name.getChangedToAt();
-                    if (changedAt != null) {
-                        changeTime = new Timestamp(Long.parseLong(changedAt));
-                    }
-                    result.put(changeTime, oldname);
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), UTF8))) {
+                if (connection.getResponseCode() == 429) {
+                    return null;
                 }
+                NameHistory[] names = gson.get().fromJson(in, NameHistory[].class);
+                if (names == null || names.length == 0) return null;
+                for (NameHistory name : names) {
+                    if (name.getName() != null) {
+                        String oldname = name.getName();
+                        Timestamp changeTime = new Timestamp(0);
+                        String changedAt = name.getChangedToAt();
+                        if (changedAt != null) {
+                            changeTime = new Timestamp(Long.parseLong(changedAt));
+                        }
+                        result.put(changeTime, oldname);
+                    }
+                }
+            } finally {
+                connection.disconnect();
             }
         } catch (IOException ex) {
             throw new IllegalStateException();
