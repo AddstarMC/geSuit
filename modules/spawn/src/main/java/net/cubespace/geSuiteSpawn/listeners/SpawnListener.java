@@ -48,10 +48,25 @@ public class SpawnListener implements Listener {
         }
     }
 
-    @EventHandler( priority = EventPriority.LOWEST, ignoreCancelled=true )
+    // If force spawn perm is set, spawn players at world spawn by default; regardless of their last location
+    // We need a separate event handler for this so "new spawn" can still override this
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled=true)
+    public void playerForcedSpawn( PlayerSpawnLocationEvent e ) {
+        if (e.getPlayer().hasPermission( "gesuit.spawns.force.spawn")) {
+            if (SpawnManager.hasWorldSpawn(e.getPlayer().getWorld())) {
+                if (BukkitModule.isDebug()) instance.getLogger().info("Forcing world spawn for " + e.getPlayer().getName() + " in world " + e.getPlayer().getWorld().getName());
+                e.setSpawnLocation(SpawnManager.getWorldSpawn(e.getPlayer().getWorld()));
+            } else if (SpawnManager.hasServerSpawn()) {
+                if (BukkitModule.isDebug()) instance.getLogger().info("Forcing server spawn for " + e.getPlayer().getName() + " in world " + e.getPlayer().getWorld().getName());
+                e.setSpawnLocation(SpawnManager.getServerSpawn());
+            }
+        }
+    }
+
+    @EventHandler( priority = EventPriority.LOW, ignoreCancelled=true )
     public void playerSpawn( PlayerSpawnLocationEvent e ) {
         if (e.getSpawnLocation() == null || e.getSpawnLocation().getWorld() == null) {
-            System.out.println("World is invalid! Sending player to spawn!");
+            instance.getLogger().warning("Spawn location is invalid! Sending player to spawn!");
             Location loc = getSpawnLocation(e.getPlayer());
             if (loc != null) {
                 e.setSpawnLocation(loc);

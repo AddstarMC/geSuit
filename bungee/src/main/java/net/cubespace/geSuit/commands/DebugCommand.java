@@ -95,6 +95,7 @@ public class DebugCommand extends Command
                     PlayerManager.sendMessageToTarget(sender, "ERROR: bukkitplugins requires " +
                             "parameter either all or servername");
                 }
+                break;
             case "pluginmsg":
                 if (args.length == 2) {
                     String server = args[1];
