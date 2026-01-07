@@ -63,11 +63,11 @@ public class SpawnListener implements Listener {
         }
     }
 
-    @EventHandler( priority = EventPriority.LOW, ignoreCancelled=true )
-    public void playerSpawn( PlayerSpawnLocationEvent e ) {
-        if (e.getSpawnLocation() == null || e.getSpawnLocation().getWorld() == null) {
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled=true)
+    public void playerSpawn(PlayerSpawnLocationEvent e) {
+        if (e.getSpawnLocation().getWorld() == null) {
             instance.getLogger().warning("Spawn location is invalid! Sending player to spawn!");
-            Location loc = getSpawnLocation(e.getPlayer());
+            Location loc = manager.getSpawnLocation(e.getPlayer());
             if (loc != null) {
                 e.setSpawnLocation(loc);
             } else {
@@ -76,31 +76,19 @@ public class SpawnListener implements Listener {
         }
     }
 
-    @EventHandler( priority = EventPriority.NORMAL, ignoreCancelled=true )
-    public void playerRespawn( PlayerRespawnEvent e ) {
+    // Handle respawn locations (eg . after death)
+    // This is set to HIGH because MyWorlds sets respawn locations at NORMAL priority
+    // so this needs to run after that to override it to ensure geSuit spawn locations are used
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled=true)
+    public void playerRespawn(PlayerRespawnEvent e) {
 		if (e.getPlayer().hasMetadata("NPC")) return; // Ignore NPCs
-        Location loc = getSpawnLocation(e.getPlayer());
+        Location loc = manager.getSpawnLocation(e.getPlayer());
         if (loc != null) {
+            if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Teleporting player " + e.getPlayer().getName() + " to spawn at " + loc);
             e.setRespawnLocation(loc);
         } else {
+            instance.getLogger().warning("Error: No location returned by getSpawnLocation() for player " + e.getPlayer().getName() + "!");
             manager.sendPlayerToProxySpawn(e.getPlayer(), true);
         }
-    }
-
-    private Location getSpawnLocation(Player p) {
-        if ( p.getBedSpawnLocation() != null && p.hasPermission( "gesuit.spawns.spawn.bed" ) ) {
-            return p.getBedSpawnLocation();
-        } else if ( SpawnManager.hasWorldSpawn( p.getWorld() ) && p.hasPermission( "gesuit.spawns.spawn.world" ) ) {
-            return SpawnManager.getWorldSpawn( p.getWorld() );
-        } else if ( SpawnManager.hasServerSpawn() && p.hasPermission( "gesuit.spawns.spawn.server" ) ) {
-            return SpawnManager.getServerSpawn();
-        } else if ( p.hasPermission( "gesuit.spawns.spawn.global" ) ) {
-            if ( SpawnManager.hasWorldSpawn( p.getWorld() ) ) {
-                return SpawnManager.getWorldSpawn( p.getWorld() );
-            } else if ( SpawnManager.hasServerSpawn() ) {
-                return SpawnManager.getServerSpawn();
-            }
-        }
-        return null;
     }
 }

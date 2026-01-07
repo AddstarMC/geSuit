@@ -195,21 +195,37 @@ public class SpawnManager extends DataManager {
     }
 
     public void sendPlayerToSpawn(CommandSender sender) {
-        Player p = ( Player ) sender;
-        if(p.hasPermission("gesuit.spawns.spawn.bed")){
-            try {
-                p.teleport(p.getBedSpawnLocation());
-            }catch(NullPointerException e){
-                //catch if they dont have a bed
+        Player p = (Player) sender;
+        Location loc = getSpawnLocation(p);
+        if (loc == null) {
+            instance.getLogger().warning("Error: No location returned by getSpawnLocation() for player " + p.getName() + "!");
+            sendPlayerToProxySpawn(p, true);
+        } else {
+            if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Teleporting player " + p.getName() + " to spawn at " + loc);
+            p.teleport(loc);
+        }
+    }
+
+    public Location getSpawnLocation(Player p) {
+        if (p.hasPermission("gesuit.spawns.spawn.bed") && p.getBedSpawnLocation() != null) {
+            if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Using bed spawn for player " + p.getName());
+            return p.getBedSpawnLocation();
+        } else if (p.hasPermission("gesuit.spawns.spawn.world") && SpawnManager.hasWorldSpawn(p.getWorld())) {
+            if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Using world spawn for player " + p.getName());
+            return SpawnManager.getWorldSpawn( p.getWorld() );
+        } else if (p.hasPermission("gesuit.spawns.spawn.server") && SpawnManager.hasServerSpawn()) {
+            if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Using server spawn for player " + p.getName());
+            return SpawnManager.getServerSpawn();
+        } else if (p.hasPermission("gesuit.spawns.spawn.global")) {
+            if (SpawnManager.hasWorldSpawn(p.getWorld())) {
+                if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Using global world spawn for player " + p.getName());
+                return SpawnManager.getWorldSpawn(p.getWorld());
+            } else if (SpawnManager.hasServerSpawn()) {
+                if (BukkitModule.isDebug()) instance.getLogger().info("geSuit DEBUG: Using global server spawn for player " + p.getName());
+                return SpawnManager.getServerSpawn();
             }
         }
-        if (hasWorldSpawn(p.getWorld()) && p.hasPermission("gesuit.spawns.spawn.world")) {
-            sendPlayerToWorldSpawn(p);
-        } else if (hasServerSpawn() && p.hasPermission("gesuit.spawns.spawn.server")) {
-            sendPlayerToServerSpawn(p);
-        } else if ( p.hasPermission( "gesuit.spawns.spawn.global" ) ) {
-            sendPlayerToProxySpawn(p, false);
-        }
+        return null;
     }
 
     public static void addSpawn( String name, String world, double x, double y, double z, float yaw, float pitch ) {
