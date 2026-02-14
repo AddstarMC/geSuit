@@ -7,7 +7,7 @@
     <name>geSuit-parent</name>
     <packaging>pom</packaging>
     <modules>
-        <module>../bungee</module>
+        <module>../proxy</module>
         <module>../modules/common</module>
     </modules>
     <properties>
@@ -18,7 +18,6 @@
         <spigot.version>1.18.2-R0.1-SNAPSHOT</spigot.version>
         <worldedit.version>7.2.0-SNAPSHOT</worldedit.version>
         <worldgaurd.version>7.0.0-SNAPSHOT</worldgaurd.version>
-        <bungeecord.version>1.16-R0.5-SNAPSHOT</bungeecord.version>
     </properties>
     <scm>
         <connection>scm:git:git@github.com:AddstarMC/geSuit.git</connection>
