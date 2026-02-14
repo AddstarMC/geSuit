@@ -10,7 +10,8 @@
         <relativePath>../common/pom.xml</relativePath>
     </parent>
     <properties>
-        <worldgaurd.version>7.0.0-SNAPSHOT</worldgaurd.version>
+        <!-- Use release version; worldguard-bukkit 7.0.0-SNAPSHOT is not published on EngineHub -->
+        <worldgaurd.version>7.0.9</worldgaurd.version>
     </properties>
     <repositories>
         <repository>
@@ -27,7 +28,7 @@
             </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-legacy</artifactId>
+            <artifactId>worldguard-bukkit</artifactId>
             <version>${worldgaurd.version}</version>
             <scope>provided</scope>
             <exclusions>
@@ -35,6 +36,10 @@
                     <!-- Don't pull in old Bukkit 1.13 API -->
                     <groupId>org.bukkit</groupId>
                     <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bstats</groupId>
+                    <artifactId>bstats-bukkit</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
