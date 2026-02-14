@@ -6,6 +6,7 @@ import net.cubespace.geSuit.objects.Warp;
 import net.cubespace.geSuit.pluginmessages.TeleportToLocation;
 import net.cubespace.geSuit.Utilities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,41 +76,55 @@ public class WarpsManager {
         GSPlayer s = PlayerManager.getPlayer(sender);
         if (!(server || global || hidden)) {
             s.sendMessage("&c" + "No warps to display");
+            return;
         }
-        StringBuilder serverString = new StringBuilder("&6" + "Server warps: \n");
-        StringBuilder globalString = new StringBuilder("&6" + "Global warps: \n");
-        StringBuilder hiddenString = new StringBuilder("&6" + "Hidden warps: \n");
 
+        Map<String, List<Warp>> byServer = new TreeMap<>();
         Map<String, Warp> sorted = new TreeMap<>(warps);
-        for (Warp w : sorted.values()) {
-            if (w.isGlobal()) {
-                globalString.append(w.getName()).append(", ");
-            } else if (w.isHidden()) {
-                hiddenString.append(w.getName()).append(", ");
-            } else if (s.getServer().equals(w.getLocation().getServerName())) {
-                serverString.append(w.getName()).append(", ");
-            } else if (bypass) {
-                globalString.append(w.getName()).append(", ");
-            }
-        }
-        if (server) {
-            if (serverString.length() == 17) {
-                serverString.append("&c" + " none  ");
-            }
-            s.sendMessage(serverString.substring(0, serverString.length() - 2));
-        }
-        if (global) {
-            if (globalString.length() == 17) {
-                globalString.append("&c" + " none  ");
-            }
+        String currentServer = s.getServer();
 
-            s.sendMessage(globalString.substring(0, globalString.length() - 2));
-        }
-        if (hidden) {
-            if (hiddenString.length() == 17) {
-                hiddenString.append("&c" + " none  ");
+        for (Warp w : sorted.values()) {
+            boolean include = false;
+            if (w.isGlobal() && global) {
+                include = true;
+            } else if (w.isHidden() && hidden) {
+                include = true;
+            } else if (!w.isGlobal() && !w.isHidden()) {
+                if (currentServer != null && w.getLocation().getServerName().equals(currentServer) && server) {
+                    include = true;
+                } else if (bypass) {
+                    include = true;
+                }
             }
-            s.sendMessage(hiddenString.substring(0, hiddenString.length() - 2));
+            if (include) {
+                String serverName = w.getLocation().getServerName();
+                byServer.computeIfAbsent(serverName, k -> new ArrayList<>()).add(w);
+            }
+        }
+
+        if (byServer.isEmpty()) {
+            s.sendMessage("&c" + "No warps to display");
+            return;
+        }
+
+        // Order servers: current server first, then alphabetical
+        List<String> serverOrder = new ArrayList<>(byServer.keySet());
+        serverOrder.sort((a, b) -> {
+            if (a.equals(currentServer)) return -1;
+            if (b.equals(currentServer)) return 1;
+            return a.compareTo(b);
+        });
+
+        for (String serverName : serverOrder) {
+            List<Warp> list = byServer.get(serverName);
+            String prefix = (currentServer != null && serverName.equals(currentServer))
+                    ? ConfigManager.messages.WARPS_PREFIX_THIS_SERVER.replace("{server}", serverName)
+                    : ConfigManager.messages.WARPS_PREFIX_OTHER_SERVER.replace("{server}", serverName);
+            StringBuilder line = new StringBuilder(prefix);
+            for (Warp w : list) {
+                line.append(w.getName()).append(", ");
+            }
+            s.sendMessage(line.substring(0, line.length() - 2));
         }
     }
 

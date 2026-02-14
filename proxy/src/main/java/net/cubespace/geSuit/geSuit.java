@@ -165,6 +165,10 @@ public class geSuit {
         proxy.getEventManager().register(this, new SpawnMessageListener(legacy));
         proxy.getEventManager().register(this, new APIMessageListener(legacy));
         proxy.getEventManager().register(this, new AdminMessageListener(legacy));
+        if (proxy.getPluginManager().getPlugin("redisbungee").isPresent()) {
+            proxy.getEventManager().register(this, new RedisEventPublisher());
+            logger.info("Redis event publishing enabled (ValioBungee/RedisBungee detected).");
+        }
     }
 
     public boolean isDebugEnabled() {

@@ -67,6 +67,8 @@ public class Messages extends BaseConfig {
     public String WARP_DOES_NOT_EXIST = "&c" + "Error: &4The warp &c{warp} &4does not exist";
     public String WARP_NO_PERMISSION = "&c" + "You do not have permission to use that warp";
     public String WARP_SERVER = "&c" + "Warp not on the same server";
+    public String WARPS_PREFIX_THIS_SERVER = "&a{server}: &9";
+    public String WARPS_PREFIX_OTHER_SERVER = "&e{server}: &9";
 
     // portal specific messages
     public String PORTAL_NO_PERMISSION = "&c" + "You do not have permission to enter this portal";
