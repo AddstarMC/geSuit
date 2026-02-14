@@ -45,6 +45,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -89,6 +93,13 @@
             <groupId>au.com.addstar.ccm</groupId>
             <artifactId>ChatControlMirror</artifactId>
             <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ValioBungee (RedisBungee) API - optional at runtime: Redis event publishing when plugin present -->
+        <dependency>
+            <groupId>com.github.ProxioDev.ValioBungee</groupId>
+            <artifactId>RedisBungee-Velocity</artifactId>
+            <version>0.12.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
