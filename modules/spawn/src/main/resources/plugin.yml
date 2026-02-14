@@ -9,13 +9,12 @@ commands:
     setnewspawn:
         description: Sets the new players spawn point.
         permission: gesuit.spawns.command.setnewspawn
-        aliases: [sns, setnewplayerspawn, setnoobspawn]
+        aliases: [setnewplayerspawn, setnoobspawn]
         permission-message: §cYou do not have permission for this command
         usage: /<command>
     setworldspawn:
         description: Sets the proxies world spawn point.
         permission: gesuit.spawns.command.setworldspawn
-        aliases: [sws]
         permission-message: §cYou do not have permission for this command
         usage: /<command>
     delworldspawn:
@@ -26,13 +25,12 @@ commands:
     setserverspawn:
         description: Sets the servers spawn point.
         permission: gesuit.spawns.command.setserverspawn
-        aliases: [sss]
         permission-message: §cYou do not have permission for this command
         usage: /<command>
     setglobalspawn:
         description: Sets the proxies global spawn point.
         permission: gesuit.spawns.command.setglobalspawn
-        aliases: [sgs, setproxyspawn,sethub,sethubspawn]
+        aliases: [setproxyspawn, sethubspawn]
         permission-message: §cYou do not have permission for this command
         usage: /<command>
     spawn:
@@ -43,19 +41,17 @@ commands:
     worldspawn:
         description: Sends the player to the worlds spawn
         permission: gesuit.spawns.command.worldspawn
-        aliases: [ws]
         permission-message: §cYou do not have permission for this command
         usage: /<command> (player)
     serverspawn:
         description: Sends the player to the servers spawn
         permission: gesuit.spawns.command.serverspawn
-        aliases: [ss]
         permission-message: §cYou do not have permission for this command
         usage: /<command> (player)
     globalspawn:
         description: Sends the player to the proxys spawn
         permission: gesuit.spawns.command.globalspawn
-        aliases: [gs,hub,lobby]
+        aliases: [hub, lobby]
         permission-message: §cYou do not have permission for this command
         usage: /<command> (player)
     warpspawn:
