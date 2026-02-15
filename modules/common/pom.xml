@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.cubespace</groupId>
         <artifactId>geSuit-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../../geSuit-parent/pom.xml</relativePath>
     </parent>
     <modules>

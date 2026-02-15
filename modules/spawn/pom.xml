@@ -14,7 +14,7 @@
     <parent>
         <groupId>net.cubespace</groupId>
         <artifactId>geSuitCommon</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../common/pom.xml</relativePath>
     </parent>
     <build>
