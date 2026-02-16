@@ -12,7 +12,6 @@ public class TempBanCommand implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var source = inv.source();
-        if (source instanceof Player) return;
         String[] args = inv.arguments();
         if (args.length == 0) {
             PlayerManager.sendMessageToTarget(source, ConfigManager.messages.PROXY_COMMAND_TEMPBAN_USAGE);

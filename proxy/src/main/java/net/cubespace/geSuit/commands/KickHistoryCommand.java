@@ -11,7 +11,6 @@ public class KickHistoryCommand implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var source = inv.source();
-        if (source instanceof Player) return;
         if (!ConfigManager.bans.RecordKicks) {
             PlayerManager.sendMessageToTarget(source, ConfigManager.messages.PROXY_COMMAND_KICKHISTORY_DISABLED);
             return;

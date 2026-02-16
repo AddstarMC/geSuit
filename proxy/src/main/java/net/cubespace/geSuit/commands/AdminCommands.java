@@ -10,7 +10,6 @@ public class AdminCommands implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var sender = inv.source();
-        if (sender instanceof Player) return;
         String[] args = inv.arguments();
         if (args.length == 0) {
             displayHelp(sender);
