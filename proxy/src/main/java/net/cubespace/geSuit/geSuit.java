@@ -125,30 +125,30 @@ public class geSuit {
     private void registerCommands() {
         var commandManager = proxy.getCommandManager();
         if (ConfigManager.main.MOTD_Enabled) {
-            commandManager.register(commandManager.metaBuilder("motd").build(), new MOTDCommand());
+            commandManager.register(commandManager.metaBuilder("!motd").build(), new MOTDCommand());
         }
         if (ConfigManager.main.Seen_Enabled) {
             commandManager.register(commandManager.metaBuilder("seen").build(), new SeenCommand());
         }
-        commandManager.register(commandManager.metaBuilder("unban").build(), new UnbanCommand());
-        commandManager.register(commandManager.metaBuilder("ban").build(), new BanCommand());
-        commandManager.register(commandManager.metaBuilder("tempban").build(), new TempBanCommand());
-        commandManager.register(commandManager.metaBuilder("warn").build(), new WarnCommand());
-        commandManager.register(commandManager.metaBuilder("where").build(), new WhereCommand());
-        commandManager.register(commandManager.metaBuilder("reload").build(), new ReloadCommand());
-        commandManager.register(commandManager.metaBuilder("debug").build(), new DebugCommand());
-        commandManager.register(commandManager.metaBuilder("warnhistory").build(), new WarnHistoryCommand());
+        commandManager.register(commandManager.metaBuilder("!unban").build(), new UnbanCommand());
+        commandManager.register(commandManager.metaBuilder("!ban").build(), new BanCommand());
+        commandManager.register(commandManager.metaBuilder("!tempban").build(), new TempBanCommand());
+        commandManager.register(commandManager.metaBuilder("!warn").build(), new WarnCommand());
+        commandManager.register(commandManager.metaBuilder("!where").build(), new WhereCommand());
+        commandManager.register(commandManager.metaBuilder("gsreload").build(), new ReloadCommand());
+        commandManager.register(commandManager.metaBuilder("gsdebug").build(), new DebugCommand());
+        commandManager.register(commandManager.metaBuilder("!warnhistory").build(), new WarnHistoryCommand());
         commandManager.register(commandManager.metaBuilder("kickhistory").build(), new KickHistoryCommand());
-        commandManager.register(commandManager.metaBuilder("names").build(), new NamesCommand());
-        commandManager.register(commandManager.metaBuilder("lockdown").build(), new LockdownCommand());
+        commandManager.register(commandManager.metaBuilder("!names").build(), new NamesCommand());
+        commandManager.register(commandManager.metaBuilder("!lockdown").build(), new LockdownCommand());
         commandManager.register(commandManager.metaBuilder("forcenamehistory").build(), new ForceNameHistoryCommand());
         commandManager.register(commandManager.metaBuilder("forcebatchnamehistoryupdate").build(), new ForceBatchNameHistoryUpdateCommand());
         commandManager.register(commandManager.metaBuilder("activekicks").build(), new ActiveKicksCommand());
-        commandManager.register(commandManager.metaBuilder("admin").build(), new AdminCommands());
-        commandManager.register(commandManager.metaBuilder("backtonewspawn").build(), new BacktoNewSpawn());
+        commandManager.register(commandManager.metaBuilder("gsadmin").build(), new AdminCommands());
+        commandManager.register(commandManager.metaBuilder("!backtonewspawn").build(), new BacktoNewSpawn());
         if (ConfigManager.bans.TrackOnTime) {
-            commandManager.register(commandManager.metaBuilder("ontime").build(), new OnTimeCommand());
-            commandManager.register(commandManager.metaBuilder("lastlogins").build(), new LastLoginsCommand());
+            commandManager.register(commandManager.metaBuilder("!ontime").build(), new OnTimeCommand());
+            commandManager.register(commandManager.metaBuilder("!lastlogins").build(), new LastLoginsCommand());
         }
     }
 

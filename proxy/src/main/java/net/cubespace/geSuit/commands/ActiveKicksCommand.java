@@ -16,6 +16,10 @@ public class ActiveKicksCommand implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var source = inv.source();
+        if (!(source.hasPermission("gesuit.proxy.activekicks") || source.hasPermission("gesuit.admin"))) {
+            PlayerManager.sendMessageToTarget(source, ConfigManager.messages.NO_PERMISSION);
+            return;
+        }
         long timeOut = ConfigManager.bans.KicksTimeOut;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(timeOut);
         PlayerManager.sendMessageToTarget(source, "Kick TimeOut: " + minutes + "m");

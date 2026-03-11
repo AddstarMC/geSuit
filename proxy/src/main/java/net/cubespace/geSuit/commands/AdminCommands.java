@@ -3,6 +3,7 @@ package net.cubespace.geSuit.commands;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import net.cubespace.geSuit.managers.AdminCommandManager;
+import net.cubespace.geSuit.managers.ConfigManager;
 import net.cubespace.geSuit.managers.PlayerManager;
 
 public class AdminCommands implements SimpleCommand {
@@ -10,6 +11,10 @@ public class AdminCommands implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var sender = inv.source();
+        if (!(sender.hasPermission("gesuit.proxy.admin") || sender.hasPermission("gesuit.admin"))) {
+            PlayerManager.sendMessageToTarget(sender, ConfigManager.messages.NO_PERMISSION);
+            return;
+        }
         String[] args = inv.arguments();
         if (args.length == 0) {
             displayHelp(sender);

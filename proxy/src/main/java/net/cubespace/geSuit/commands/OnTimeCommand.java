@@ -11,6 +11,10 @@ public class OnTimeCommand implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var source = inv.source();
+        if (!(source.hasPermission("gesuit.proxy.ontime") || source.hasPermission("gesuit.admin"))) {
+            PlayerManager.sendMessageToTarget(source, ConfigManager.messages.NO_PERMISSION);
+            return;
+        }
         String[] args = inv.arguments();
         String senderName = source instanceof Player ? ((Player) source).getUsername() : "Console";
         if (args.length == 0) {

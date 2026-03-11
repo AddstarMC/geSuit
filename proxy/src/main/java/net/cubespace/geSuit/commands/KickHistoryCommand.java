@@ -11,6 +11,10 @@ public class KickHistoryCommand implements SimpleCommand {
     @Override
     public void execute(SimpleCommand.Invocation inv) {
         var source = inv.source();
+        if (!(source.hasPermission("gesuit.proxy.kickhistory") || source.hasPermission("gesuit.admin"))) {
+            PlayerManager.sendMessageToTarget(source, ConfigManager.messages.NO_PERMISSION);
+            return;
+        }
         if (!ConfigManager.bans.RecordKicks) {
             PlayerManager.sendMessageToTarget(source, ConfigManager.messages.PROXY_COMMAND_KICKHISTORY_DISABLED);
             return;
